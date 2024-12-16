@@ -38,6 +38,7 @@ class KmipServerConfig(object):
         self.settings['tls_cipher_suites'] = []
         self.settings['logging_level'] = logging.INFO
         self.settings['auth_plugins'] = []
+        self.settings['encryption_engine'] = 'default'
 
         self._expected_settings = [
             'hostname',
@@ -52,7 +53,8 @@ class KmipServerConfig(object):
             'enable_tls_client_auth',
             'tls_cipher_suites',
             'logging_level',
-            'database_path'
+            'database_path',
+            'encryption_engine'
         ]
 
     def set_setting(self, setting, value):
@@ -96,8 +98,10 @@ class KmipServerConfig(object):
             self._set_tls_cipher_suites(value)
         elif setting == 'logging_level':
             self._set_logging_level(value)
-        else:
+        elif setting == 'database_path':
             self._set_database_path(value)
+        else:
+            self._set_encryption_engine(value)
 
     def load_settings(self, path):
         """
@@ -184,6 +188,9 @@ class KmipServerConfig(object):
             )
         if parser.has_option('server', 'database_path'):
             self._set_database_path(parser.get('server', 'database_path'))
+
+        if parser.has_option('server', 'encryption_engine'):
+            self._set_encryption_engine(parser.get('server', 'encryption_engine'))
 
     def _set_hostname(self, value):
         if isinstance(value, six.string_types):
@@ -350,3 +357,14 @@ class KmipServerConfig(object):
                 "The database path, if specified, must be a valid path to a "
                 "SQLite database file."
             )
+        
+    def _set_encryption_engine(self, value):
+        if value is None:
+            self.settings['encryption_engine'] = 'default'
+        elif isinstance(value, six.string_types):
+            self.settings['encryption_engine'] = value
+        else:
+            raise exceptions.ConfigurationError(
+            "The encryption engine must be a string representing the "
+            "encryption engine to use."
+            )        

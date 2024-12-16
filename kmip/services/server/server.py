@@ -61,7 +61,8 @@ class KmipServer(object):
             tls_cipher_suites=None,
             logging_level=None,
             live_policies=False,
-            database_path=None
+            database_path=None,
+            encryption_engine='default'
     ):
         """
         Create a KmipServer.
@@ -127,6 +128,8 @@ class KmipServer(object):
                 to False.
             database_path (string): The path to the server's SQLite database
                 file. Optional, defaults to None.
+            encryption_engine: New parameter go choose between the default engine or using the DuoKey Cockpit
+                'default' or 'duokey-cockpit'
         """
         self._logger = logging.getLogger('kmip.server')
         self._setup_logging(log_path)
@@ -144,7 +147,8 @@ class KmipServer(object):
             enable_tls_client_auth,
             tls_cipher_suites,
             logging_level,
-            database_path
+            database_path,
+            encryption_engine
         )
         self.live_policies = live_policies
         self.policies = {}
@@ -194,7 +198,8 @@ class KmipServer(object):
             enable_tls_client_auth=None,
             tls_cipher_suites=None,
             logging_level=None,
-            database_path=None
+            database_path=None,
+            encryption_engine=None
     ):
         if path:
             self.config.load_settings(path)
@@ -227,6 +232,8 @@ class KmipServer(object):
             self.config.set_setting('logging_level', logging_level)
         if database_path:
             self.config.set_setting('database_path', database_path)
+        if encryption_engine:
+            self.config.set_setting('encryption_engine', encryption_engine)
 
     def start(self):
         """
@@ -632,6 +639,19 @@ def build_argument_parser():
         ),
     )
 
+    parser.add_option(
+        "-e",
+        "--encryption_engine",
+        action="store",
+        type="str",
+        default="default",
+        dest="encryption_engine",
+        help=(
+        "A string representing the encryption Engine to use. Optional, "
+        "defaults to 'default', other possible value is 'duokey-cockpit'"
+        )
+        )
+
     return parser
 
 
@@ -665,6 +685,8 @@ def main(args=None):
         kwargs['logging_level'] = opts.logging_level
     if opts.database_path:
         kwargs['database_path'] = opts.database_path
+    if opts.encryption_engine:
+        kwargs['encryption_engine'] = opts.encryption_engine
 
     kwargs['live_policies'] = True
 
