@@ -62,7 +62,19 @@ class KmipServer(object):
             logging_level=None,
             live_policies=False,
             database_path=None,
-            encryption_engine='default'
+            encryption_engine='default',
+            cockpit_username=None,
+            cockpit_pwd=None,
+            cockpit_client_id=None,
+            cockpit_client_secret=None,
+            cockpit_app_id=None,
+            cockpit_idp_url=None,
+            cockpit_api_url=None,
+            cockpit_key_id=None,
+            cockpit_upn=None,
+            cockpit_vault_id=None,
+            cockpit_tenant_header=None,
+            cockpit_tenant_id=None
     ):
         """
         Create a KmipServer.
@@ -130,6 +142,19 @@ class KmipServer(object):
                 file. Optional, defaults to None.
             encryption_engine: New parameter go choose between the default engine or using the DuoKey Cockpit
                 'default' or 'duokey-cockpit'
+            Cockpit parameters needed if encryption_engine='duokey-cockpit'
+                cockpit_username
+                cockpit_pwd
+                cockpit_client_id
+                cockpit_client_secret
+                cockpit_app_id
+                cockpit_idp_url
+                cockpit_api_url
+                cockpit_key_id
+                cockpit_upn
+                cockpit_vault_id
+                cockpit_tenant_header
+                cockpit_tenant_id            
         """
         self._logger = logging.getLogger('kmip.server')
         self._setup_logging(log_path)
@@ -148,7 +173,19 @@ class KmipServer(object):
             tls_cipher_suites,
             logging_level,
             database_path,
-            encryption_engine
+            encryption_engine,
+            cockpit_username,
+            cockpit_pwd,
+            cockpit_client_id,
+            cockpit_client_secret,
+            cockpit_app_id,
+            cockpit_idp_url,
+            cockpit_api_url,
+            cockpit_key_id,
+            cockpit_upn,
+            cockpit_vault_id,
+            cockpit_tenant_header,
+            cockpit_tenant_id            
         )
         self.live_policies = live_policies
         self.policies = {}
@@ -199,7 +236,19 @@ class KmipServer(object):
             tls_cipher_suites=None,
             logging_level=None,
             database_path=None,
-            encryption_engine=None
+            encryption_engine=None,
+            cockpit_username=None,
+            cockpit_pwd=None,
+            cockpit_client_id=None,
+            cockpit_client_secret=None,
+            cockpit_app_id=None,
+            cockpit_idp_url=None,
+            cockpit_api_url=None,
+            cockpit_key_id=None,
+            cockpit_upn=None,
+            cockpit_vault_id=None,
+            cockpit_tenant_header=None,
+            cockpit_tenant_id=None   
     ):
         if path:
             self.config.load_settings(path)
@@ -234,6 +283,30 @@ class KmipServer(object):
             self.config.set_setting('database_path', database_path)
         if encryption_engine:
             self.config.set_setting('encryption_engine', encryption_engine)
+        if cockpit_username:
+            self.config.set_setting('cockpit_username', cockpit_username)
+        if cockpit_pwd:
+            self.config.set_setting('cockpit_pwd', cockpit_pwd)
+        if cockpit_client_id:
+            self.config.set_setting('cockpit_client_id', cockpit_client_id)
+        if cockpit_client_secret:
+            self.config.set_setting('cockpit_client_secret', cockpit_client_secret)
+        if cockpit_app_id:
+            self.config.set_setting('cockpit_app_id', cockpit_app_id)
+        if cockpit_idp_url:
+            self.config.set_setting('cockpit_idp_url', cockpit_idp_url)
+        if cockpit_api_url:
+            self.config.set_setting('cockpit_api_url', cockpit_api_url)
+        if cockpit_key_id:
+            self.config.set_setting('cockpit_key_id', cockpit_key_id)
+        if cockpit_upn:
+            self.config.set_setting('cockpit_upn', cockpit_upn)
+        if cockpit_vault_id:
+            self.config.set_setting('cockpit_vault_id', cockpit_vault_id)
+        if cockpit_tenant_header:
+            self.config.set_setting('cockpit_tenant_header', cockpit_tenant_header)
+        if cockpit_tenant_id:
+            self.config.set_setting('cockpit_tenant_id', cockpit_tenant_id)            
 
     def start(self):
         """
@@ -652,6 +725,140 @@ def build_argument_parser():
         )
         )
 
+    parser.add_option(
+        "",
+        "--cockpit_username",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_username",
+        help=(
+        "A string representing the cockpit_username. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    
+    parser.add_option(
+        "",
+        "--cockpit_pwd",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_pwd",
+        help=(
+        "A string representing the cockpit_pwd. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_client_id",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_client_id",
+        help=(
+        "A string representing the cockpit_client_id. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_client_secret",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_client_secret",
+        help=(
+        "A string representing the cockpit_client_secret. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_app_id",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_app_id",
+        help=(
+        "A string representing the cockpit_app_id. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_idp_url",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_idp_url",
+        help=(
+        "A string representing the cockpit_idp_url. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_api_url",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_api_url",
+        help=(
+        "A string representing the cockpit_api_url. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_key_id",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_key_id",
+        help=(
+        "A string representing the cockpit_key_id. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_upn",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_upn",
+        help=(
+        "A string representing the cockpit_upn. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_vault_id",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_vault_id",
+        help=(
+        "A string representing the cockpit_vault_id. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_tenant_header",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_tenant_header",
+        help=(
+        "A string representing the cockpit_tenant_header. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )
+    parser.add_option(
+        "",
+        "--cockpit_tenant_id",
+        action="store",
+        type="str",
+        default="default",
+        dest="cockpit_tenant_id",
+        help=(
+        "A string representing the cockpit_tenant_id. Mandatory if encryption_engine is duokey-cockpit"
+        )
+        )        
+        
     return parser
 
 
@@ -687,7 +894,31 @@ def main(args=None):
         kwargs['database_path'] = opts.database_path
     if opts.encryption_engine:
         kwargs['encryption_engine'] = opts.encryption_engine
-
+    if opts.cockpit_username:
+        kwargs['cockpit_username'] = opts.cockpit_username
+    if opts.cockpit_pwd:
+        kwargs['cockpit_pwd'] = opts.cockpit_pwd
+    if opts.cockpit_client_id:
+        kwargs['cockpit_client_id'] = opts.cockpit_client_id
+    if opts.cockpit_client_secret:
+        kwargs['cockpit_client_secret'] = opts.cockpit_client_secret
+    if opts.cockpit_app_id:
+        kwargs['cockpit_app_id'] = opts.cockpit_app_id
+    if opts.cockpit_idp_url:
+        kwargs['cockpit_idp_url'] = opts.cockpit_idp_url
+    if opts.cockpit_api_url:
+        kwargs['cockpit_api_url'] = opts.cockpit_api_url
+    if opts.cockpit_key_id:
+        kwargs['cockpit_key_id'] = opts.cockpit_key_id
+    if opts.cockpit_upn:
+        kwargs['cockpit_upn'] = opts.cockpit_upn
+    if opts.cockpit_vault_id:
+        kwargs['cockpit_vault_id'] = opts.cockpit_vault_id
+    if opts.cockpit_tenant_header:
+        kwargs['cockpit_tenant_header'] = opts.cockpit_tenant_header
+    if opts.cockpit_tenant_id:
+        kwargs['cockpit_tenant_id'] = opts.cockpit_tenant_id
+        
     kwargs['live_policies'] = True
 
     # Create and start the server.

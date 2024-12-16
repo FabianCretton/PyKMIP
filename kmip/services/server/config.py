@@ -54,7 +54,19 @@ class KmipServerConfig(object):
             'tls_cipher_suites',
             'logging_level',
             'database_path',
-            'encryption_engine'
+            'encryption_engine',
+            'cockpit_username',
+            'cockpit_pwd',
+            'cockpit_client_id',
+            'cockpit_client_secret',
+            'cockpit_app_id',
+            'cockpit_idp_url',
+            'cockpit_api_url',
+            'cockpit_key_id',
+            'cockpit_upn',
+            'cockpit_vault_id',
+            'cockpit_tenant_header',
+            'cockpit_tenant_id'            
         ]
 
     def set_setting(self, setting, value):
@@ -100,6 +112,30 @@ class KmipServerConfig(object):
             self._set_logging_level(value)
         elif setting == 'database_path':
             self._set_database_path(value)
+        elif setting == 'cockpit_username':
+            self._set_cockpit_username(value)
+        elif setting == 'cockpit_pwd':
+            self._set_cockpit_pwd(value)
+        elif setting == 'cockpit_client_id':
+            self._set_cockpit_client_id(value)
+        elif setting == 'cockpit_client_secret':
+            self._set_cockpit_client_secret(value)
+        elif setting == 'cockpit_app_id':
+            self._set_cockpit_app_id(value)
+        elif setting == 'cockpit_idp_url':
+            self._set_cockpit_idp_url(value)
+        elif setting == 'cockpit_api_url':
+            self._set_cockpit_api_url(value)
+        elif setting == 'cockpit_key_id':
+            self._set_cockpit_key_id(value)
+        elif setting == 'cockpit_upn':
+            self._set_cockpit_upn(value)
+        elif setting == 'cockpit_vault_id':
+            self._set_cockpit_vault_id(value)
+        elif setting == 'cockpit_tenant_header':
+            self._set_cockpit_tenant_header(value)
+        elif setting == 'cockpit_tenant_id':
+            self._set_cockpit_tenant_id(value)	            
         else:
             self._set_encryption_engine(value)
 
@@ -191,6 +227,31 @@ class KmipServerConfig(object):
 
         if parser.has_option('server', 'encryption_engine'):
             self._set_encryption_engine(parser.get('server', 'encryption_engine'))
+
+        if parser.has_option('server', 'cockpit_username'):
+            self._set_cockpit_username(parser.get('server', 'cockpit_username'))
+        if parser.has_option('server', 'cockpit_pwd'):
+            self._set_cockpit_pwd(parser.get('server', 'cockpit_pwd'))
+        if parser.has_option('server', 'cockpit_client_id'):
+            self._set_cockpit_client_id(parser.get('server', 'cockpit_client_id'))
+        if parser.has_option('server', 'cockpit_client_secret'):
+            self._set_cockpit_client_secret(parser.get('server', 'cockpit_client_secret'))
+        if parser.has_option('server', 'cockpit_app_id'):
+            self._set_cockpit_app_id(parser.get('server', 'cockpit_app_id'))
+        if parser.has_option('server', 'cockpit_idp_url'):
+            self._set_cockpit_idp_url(parser.get('server', 'cockpit_idp_url'))
+        if parser.has_option('server', 'cockpit_api_url'):
+            self._set_cockpit_api_url(parser.get('server', 'cockpit_api_url'))
+        if parser.has_option('server', 'cockpit_key_id'):
+            self._set_cockpit_key_id(parser.get('server', 'cockpit_key_id'))
+        if parser.has_option('server', 'cockpit_upn'):
+            self._set_cockpit_upn(parser.get('server', 'cockpit_upn'))
+        if parser.has_option('server', 'cockpit_vault_id'):
+            self._set_cockpit_vault_id(parser.get('server', 'cockpit_vault_id'))
+        if parser.has_option('server', 'cockpit_tenant_header'):
+            self._set_cockpit_tenant_header(parser.get('server', 'cockpit_tenant_header'))
+        if parser.has_option('server', 'cockpit_tenant_id'):
+            self._set_cockpit_tenant_id(parser.get('server', 'cockpit_tenant_id'))
 
     def _set_hostname(self, value):
         if isinstance(value, six.string_types):
@@ -368,3 +429,123 @@ class KmipServerConfig(object):
             "The encryption engine must be a string representing the "
             "encryption engine to use."
             )        
+        
+    def _set_cockpit_username(self, value):
+        if not value:
+            self.settings['cockpit_username'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_username'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_username must be a string"
+            )
+            
+    def _set_cockpit_pwd(self, value):
+        if not value:
+            self.settings['cockpit_pwd'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_pwd'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_pwd must be a string"
+            )
+            
+    def _set_cockpit_client_id(self, value):
+        if not value:
+            self.settings['cockpit_client_id'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_client_id'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_client_id must be a string"
+            )
+            
+    def _set_cockpit_client_secret(self, value):
+        if not value:
+            self.settings['cockpit_client_secret'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_client_secret'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_client_secret must be a string"
+            )
+            
+    def _set_cockpit_app_id(self, value):
+        if not value:
+            self.settings['cockpit_app_id'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_app_id'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_app_id must be a string"
+            )
+            
+    def _set_cockpit_idp_url(self, value):
+        if not value:
+            self.settings['cockpit_idp_url'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_idp_url'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_idp_url must be a string"
+            )
+            
+    def _set_cockpit_api_url(self, value):
+        if not value:
+            self.settings['cockpit_api_url'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_api_url'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_api_url must be a string"
+            )
+            
+    def _set_cockpit_key_id(self, value):
+        if not value:
+            self.settings['cockpit_key_id'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_key_id'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_key_id must be a string"
+            )
+            
+    def _set_cockpit_upn(self, value):
+        if not value:
+            self.settings['cockpit_upn'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_upn'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_upn must be a string"
+            )
+            
+    def _set_cockpit_vault_id(self, value):
+        if not value:
+            self.settings['cockpit_vault_id'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_vault_id'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_vault_id must be a string"
+            )
+            
+    def _set_cockpit_tenant_header(self, value):
+        if not value:
+            self.settings['cockpit_tenant_header'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_tenant_header'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_tenant_header must be a string"
+            )
+            
+    def _set_cockpit_tenant_id(self, value):    
+        if not value:
+            self.settings['cockpit_tenant_id'] = None
+        elif isinstance(value, six.string_types):
+            self.settings['cockpit_tenant_id'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The cockpit_tenant_id must be a string"
+            )           
