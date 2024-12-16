@@ -14,7 +14,7 @@
 # under the License.
 
 from kmip.services.server.crypto.api import CryptographicEngine
-from kmip.services.server.crypto.engine import CryptographyEngine
+from kmip.services.server.crypto.engine_default import CryptographyEngine
 
 __all__ = [
     'CryptographicEngine',

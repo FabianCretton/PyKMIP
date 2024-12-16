@@ -44,7 +44,7 @@ from kmip.pie import objects
 from kmip.pie import sqltypes
 
 from kmip.services.server import policy
-from kmip.services.server.crypto import engine
+from kmip.services.server.crypto import engine_default
 
 
 class KmipEngine(object):
@@ -86,7 +86,7 @@ class KmipEngine(object):
         """
         self._logger = logging.getLogger('kmip.server.engine')
 
-        self._cryptography_engine = engine.CryptographyEngine()
+        self._cryptography_engine = engine_default.CryptographyEngine()
 
         self.database_path = 'sqlite:///{}'.format(database_path)
         if not database_path:
