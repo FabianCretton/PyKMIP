@@ -12,3 +12,8 @@
 build
 dist
 htmlcov
+
+# Poc DK
+PyKMIP_runFiles
+.vscode
+
