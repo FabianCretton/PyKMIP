@@ -72,7 +72,7 @@ class KmipEngine(object):
         * Cryptographic usage mask enforcement per object type
     """
 
-    def __init__(self, policies=None, database_path=None):
+    def __init__(self, policies=None, database_path=None, config=None):
         """
         Create a KmipEngine.
 
@@ -86,7 +86,13 @@ class KmipEngine(object):
         """
         self._logger = logging.getLogger('kmip.server.engine')
 
-        self._cryptography_engine = engine_default.CryptographyEngine()
+        self.config = config
+
+        # DK first tests
+        if self.config.settings.get('encryption_engine') == "default":
+            self._cryptography_engine = engine_default.CryptographyEngine()
+        else:
+            self._cryptography_engine = engine_default.CryptographyEngine()
 
         self.database_path = 'sqlite:///{}'.format(database_path)
         if not database_path:

@@ -339,9 +339,11 @@ class KmipServer(object):
 
         self.policy_monitor.start()
 
+        # DK: currently passing the full config, as many parameters are needed
         self._engine = engine.KmipEngine(
             policies=self.policies,
-            database_path=self.config.settings.get('database_path')
+            database_path=self.config.settings.get('database_path'),
+            config=self.config
         )
 
         self._logger.info("Starting server socket handler.")
